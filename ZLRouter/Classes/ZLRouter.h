@@ -10,8 +10,8 @@
 extern NSString *const ZLRouterParameterURL;
 extern NSString *const ZLRouterParameterPathVars;
 extern NSString *const ZLRouterParameterQuery;
-extern NSString *const ZLJRouterParameterUserInfo;
-extern NSString *const ZLJRouterParameterCompletion;
+extern NSString *const ZLRouterParameterUserInfo;
+extern NSString *const ZLRouterParameterCompletion;
 
 typedef void (^ZLRouterHandler)(NSDictionary *routerParameters);
 

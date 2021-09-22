@@ -21,13 +21,19 @@ pod 'ZLRouter'
 
 [ZLRouter registerURLPattern:@"afff://fjfj/:id/fasdf/:ai" toHandler:^(NSDictionary *routerParameters) {
     NSLog(@"%@", routerParameters);
-    void (^block)(id result) = (void (^)(id result))routerParameters[ZLJRouterParameterCompletion];
+    void (^block)(id result) = (void (^)(id result))routerParameters[ZLRouterParameterCompletion];
     block(@22);
+}];
+
+[ZLRouter registerURLPattern:@"https://:host" toHandler:^(NSDictionary *routerParameters) {
+    NSLog(@"%@", routerParameters);
 }];
 
 [ZLRouter openURL:@"afff://fjfj/23/fasdf/asdkf?a=b" withUserInfo:@"fff" completion:^(id result) {
     NSLog(@"%@", result);
 }];
+
+[ZLRouter openURL:@"https://www.baidu.com"];
 ```
 
 ## Author

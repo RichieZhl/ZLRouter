@@ -16,7 +16,7 @@
     // Override point for customization after application launch.
     [ZLRouter registerURLPattern:@"afff://fjfj/:id/fasdf/:ai" toHandler:^(NSDictionary *routerParameters) {
         NSLog(@"%@", routerParameters);
-        void (^block)(id result) = (void (^)(id result))routerParameters[ZLJRouterParameterCompletion];
+        void (^block)(id result) = (void (^)(id result))routerParameters[ZLRouterParameterCompletion];
         block(@22);
     }];
     

@@ -10,8 +10,8 @@
 NSString *const ZLRouterParameterURL = @"ZLRouterParameterURL";
 NSString *const ZLRouterParameterPathVars = @"ZLRouterParameterPathVars";
 NSString *const ZLRouterParameterQuery = @"ZLRouterParameterQuery";
-NSString *const ZLJRouterParameterUserInfo = @"ZLJRouterParameterUserInfo";
-NSString *const ZLJRouterParameterCompletion = @"ZLJRouterParameterCompletion";
+NSString *const ZLRouterParameterUserInfo = @"ZLRouterParameterUserInfo";
+NSString *const ZLRouterParameterCompletion = @"ZLRouterParameterCompletion";
 
 @interface ZLRouteItem : NSObject
 
@@ -96,10 +96,10 @@ NSString *const ZLJRouterParameterCompletion = @"ZLJRouterParameterCompletion";
         routeItem.query = nil;
     }
     if (userInfo) {
-        routerParameters[ZLJRouterParameterUserInfo] = userInfo;
+        routerParameters[ZLRouterParameterUserInfo] = userInfo;
     }
     if (completion) {
-        routerParameters[ZLJRouterParameterCompletion] = [completion copy];
+        routerParameters[ZLRouterParameterCompletion] = [completion copy];
     }
     routerParameters[ZLRouterParameterURL] = URL;
     routeItem.handler(routerParameters);
