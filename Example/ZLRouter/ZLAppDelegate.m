@@ -20,9 +20,15 @@
         block(@22);
     }];
     
+    [ZLRouter registerURLPattern:@"https://:host" toHandler:^(NSDictionary *routerParameters) {
+        NSLog(@"%@", routerParameters);
+    }];
+    
     [ZLRouter openURL:@"afff://fjfj/23/fasdf/asdkf?a=b" withUserInfo:@"fff" completion:^(id result) {
         NSLog(@"%@", result);
     }];
+    
+    [ZLRouter openURL:@"https://www.baidu.com"];
     
     return YES;
 }

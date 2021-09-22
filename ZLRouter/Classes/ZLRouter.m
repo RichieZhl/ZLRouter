@@ -7,6 +7,7 @@
 
 #import "ZLRouter.h"
 
+NSString *const ZLRouterParameterURL = @"ZLRouterParameterURL";
 NSString *const ZLRouterParameterPathVars = @"ZLRouterParameterPathVars";
 NSString *const ZLRouterParameterQuery = @"ZLRouterParameterQuery";
 NSString *const ZLJRouterParameterUserInfo = @"ZLJRouterParameterUserInfo";
@@ -63,7 +64,12 @@ NSString *const ZLJRouterParameterCompletion = @"ZLJRouterParameterCompletion";
     if (url == nil) {
         return;
     }
-    [[[self class] routerMap] removeObjectForKey:[NSString stringWithFormat:@"%@://%@", url.scheme, url.host]];
+    if (url.host.length == 0) {
+        [[[self class] routerMap] removeObjectForKey:[NSString stringWithFormat:@"%@://", url.scheme]];
+    } else {
+        [[[self class] routerMap] removeObjectForKey:[NSString stringWithFormat:@"%@://%@", url.scheme, url.host]];
+    }
+    
 }
 
 + (void)openURL:(NSString *)URL {
@@ -95,6 +101,7 @@ NSString *const ZLJRouterParameterCompletion = @"ZLJRouterParameterCompletion";
     if (completion) {
         routerParameters[ZLJRouterParameterCompletion] = [completion copy];
     }
+    routerParameters[ZLRouterParameterURL] = URL;
     routeItem.handler(routerParameters);
 }
 
@@ -103,6 +110,7 @@ NSString *const ZLJRouterParameterCompletion = @"ZLJRouterParameterCompletion";
 }
 
 + (ZLRouteItem *)matchPatternURL:(NSString *)URLPattern {
+    URLPattern = [URLPattern stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:URLPattern];
     if (url == nil) {
         return nil;
@@ -110,7 +118,7 @@ NSString *const ZLJRouterParameterCompletion = @"ZLJRouterParameterCompletion";
     
     ZLRouteItem *routeItem = [[self class] routerMap][[NSString stringWithFormat:@"%@://%@", url.scheme, url.host]];
     if (routeItem == nil) {
-        return nil;
+        return [[self class] routerMap][[url.scheme stringByAppendingString:@"://"]];
     }
     
     if (routeItem.patternURL.pathComponents.count == 0 || (routeItem.patternURL.pathComponents.count == 1 && [routeItem.patternURL.pathComponents.firstObject isEqualToString:@"/"])) {

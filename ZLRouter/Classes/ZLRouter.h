@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const ZLRouterParameterURL;
 extern NSString *const ZLRouterParameterPathVars;
 extern NSString *const ZLRouterParameterQuery;
 extern NSString *const ZLJRouterParameterUserInfo;
