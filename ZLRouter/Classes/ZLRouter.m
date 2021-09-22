@@ -127,7 +127,7 @@ NSString *const ZLRouterParameterCompletion = @"ZLRouterParameterCompletion";
         }
     }
     
-    if (routeItem.patternURL.pathComponents.count != url.pathComponents.count || ![url.pathComponents.firstObject isEqualToString:@"/"]) {
+    if (routeItem.patternURL.pathComponents.count != url.pathComponents.count) {
         return nil;
     }
     
