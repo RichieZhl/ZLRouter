@@ -7,12 +7,23 @@
 //
 
 #import "ZLAppDelegate.h"
+#import <ZLRouter/ZLRouter.h>
 
 @implementation ZLAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [ZLRouter registerURLPattern:@"afff://fjfj/:id/fasdf/:ai" toHandler:^(NSDictionary *routerParameters) {
+        NSLog(@"%@", routerParameters);
+        void (^block)(id result) = (void (^)(id result))routerParameters[ZLJRouterParameterCompletion];
+        block(@22);
+    }];
+    
+    [ZLRouter openURL:@"afff://fjfj/23/fasdf/asdkf?a=b" withUserInfo:@"fff" completion:^(id result) {
+        NSLog(@"%@", result);
+    }];
+    
     return YES;
 }
 

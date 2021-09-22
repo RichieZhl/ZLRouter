@@ -16,8 +16,18 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ZLRouter is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-```ruby
+```
 pod 'ZLRouter'
+
+[ZLRouter registerURLPattern:@"afff://fjfj/:id/fasdf/:ai" toHandler:^(NSDictionary *routerParameters) {
+    NSLog(@"%@", routerParameters);
+    void (^block)(id result) = (void (^)(id result))routerParameters[ZLJRouterParameterCompletion];
+    block(@22);
+}];
+
+[ZLRouter openURL:@"afff://fjfj/23/fasdf/asdkf?a=b" withUserInfo:@"fff" completion:^(id result) {
+    NSLog(@"%@", result);
+}];
 ```
 
 ## Author
