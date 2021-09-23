@@ -116,25 +116,39 @@ NSString *const ZLRouterParameterCompletion = @"ZLRouterParameterCompletion";
         return nil;
     }
     
-    ZLRouteItem *routeItem = [[self class] routerMap][[NSString stringWithFormat:@"%@://%@", url.scheme, url.host]];
+    NSString *host = url.host;
+    if ([host hasSuffix:@"#"]) {
+        host = [host substringToIndex:host.length - 1];
+    }
+    
+    ZLRouteItem *routeItem = [[self class] routerMap][[NSString stringWithFormat:@"%@://%@", url.scheme, host]];
     if (routeItem == nil) {
         return [[self class] routerMap][[url.scheme stringByAppendingString:@"://"]];
     }
     
     if (routeItem.patternURL.pathComponents.count == 0 || (routeItem.patternURL.pathComponents.count == 1 && [routeItem.patternURL.pathComponents.firstObject isEqualToString:@"/"])) {
-        if (url.pathComponents.count > 1 || (url.pathComponents.count == 1 && ![url.pathComponents.firstObject isEqualToString:@"/"])) {
+        if ((url.pathComponents.count == 1 && ![url.pathComponents.firstObject isEqualToString:@"/"])) {
             return nil;
         }
     }
     
-    if (routeItem.patternURL.pathComponents.count != url.pathComponents.count) {
+    NSMutableArray *routeItemPathComps = routeItem.patternURL.pathComponents.mutableCopy;
+    if (routeItemPathComps.count > 0 && [routeItemPathComps.firstObject isEqualToString:@"/"]) {
+        [routeItemPathComps removeObjectAtIndex:0];
+    }
+    NSMutableArray *itemPathComps = url.pathComponents.mutableCopy;
+    if (itemPathComps.count > 0 && [itemPathComps.firstObject isEqualToString:@"/"]) {
+        [itemPathComps removeObjectAtIndex:0];
+    }
+    
+    if (routeItemPathComps.count > itemPathComps.count) {
         return nil;
     }
     
     NSMutableDictionary *pathVars = [NSMutableDictionary dictionary];
-    for (NSUInteger index = 1; index < url.pathComponents.count; ++index) {
-        NSString *routeItemC = routeItem.patternURL.pathComponents[index];
-        NSString *itemC = url.pathComponents[index];
+    for (NSUInteger index = 0; index < routeItemPathComps.count; ++index) {
+        NSString *routeItemC = routeItemPathComps[index];
+        NSString *itemC = itemPathComps[index];
         if ([routeItemC hasPrefix:@":"]) {
             pathVars[[routeItemC substringFromIndex:1]] = itemC;
         } else if (![routeItemC isEqualToString:itemC]) {
